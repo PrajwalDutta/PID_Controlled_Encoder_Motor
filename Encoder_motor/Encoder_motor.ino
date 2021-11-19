@@ -16,7 +16,8 @@ void setup() {
   pinMode(IN2, OUTPUT);
   pinMode(pwmPin, OUTPUT);
   Serial.begin(9600);
-  attachInterrupt(digitalPinToInterrupt(ENCA), encoData, RISING);
+  attachInterrupt(digitalPinToInterrupt(ENCA), doEncoderA, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENCB), doEncoderB, CHANGE);
 
 }
 
