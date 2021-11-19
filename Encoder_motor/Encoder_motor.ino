@@ -32,7 +32,7 @@ void loop() {
  // Serial.println(pos);
  int goalpos = 1000;
  float kp = 1;
- float kd = 0.025;
+ float kd = 0.299;
  float ki = 0.0;
 
  long currT = micros();
@@ -76,12 +76,53 @@ void setMotor(int dir, int pwmVal, int pwm, int in1, int in2){
     digitalWrite(in2, LOW);
     }
 }
-void encoData(){
-  int encB = digitalRead(ENCB);
-  if (encB>0){
-    pos++;
+void doEncoderA(){  
+
+  // look for a low-to-high on channel A
+  if (digitalRead(ENCA) == HIGH) { 
+    // check channel B to see which way encoder is turning
+    if (digitalRead(ENCB) == LOW) {  
+      pos = pos + 1;         // CW
+    } 
+    else {
+      pos = pos - 1;         // CCW
     }
-    else{
-      pos--;
-      }
   }
+  else   // must be a high-to-low edge on channel A                                       
+  { 
+    // check channel B to see which way encoder is turning  
+    if (digitalRead(ENCB) == HIGH) {   
+      pos = pos + 1;          // CW
+    } 
+    else {
+      pos = pos - 1;          // CCW
+    }
+  }
+ 
+}
+
+void doEncoderB(){  
+
+  // look for a low-to-high on channel B
+  if (digitalRead(ENCB) == HIGH) {   
+   // check channel A to see which way encoder is turning
+    if (digitalRead(ENCA) == HIGH) {  
+      pos = pos + 1;         // CW
+    } 
+    else {
+      pos = pos - 1;         // CCW
+    }
+  }
+  // Look for a high-to-low on channel B
+  else { 
+    // check channel B to see which way encoder is turning  
+    if (digitalRead(ENCA) == LOW) {   
+      pos = pos + 1;          // CW
+    } 
+    else {
+      pos = pos - 1;          // CCW
+    }
+  }
+  
+
+}
